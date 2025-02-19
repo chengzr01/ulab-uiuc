@@ -40,7 +40,7 @@ const Navigation = React.forwardRef((props, ref) => {
     >
       <Navbar.Brand
         className={`${!isTop ? "brand" : "brand-white"}`}
-        href={process.env.PUBLIC_URL + "/#home"}
+        href={process.env.PUBLIC_URL + "/"}
       >
         U Lab@UIUC
       </Navbar.Brand>

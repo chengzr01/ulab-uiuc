@@ -32,6 +32,7 @@ const Projects = React.forwardRef((props, ref) => {
               onMouseLeave={(e) =>
                 (e.currentTarget.style.transform = "scale(1)")
               }
+              onClick={(e) => navigate("/projects/ResearchTown")}
             >
               <Card.Body>
                 <Card.Title>{pub.title}</Card.Title>

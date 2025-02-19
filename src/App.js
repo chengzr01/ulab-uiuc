@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 import {
   navBar,
   mainBody,
@@ -23,24 +29,30 @@ import Publications from "./components/Publications.jsx";
 import Courses from "./components/Courses.jsx";
 import Gallery from "./components/Gallery.jsx";
 import Projects from "./components/Projects.jsx";
+import About from "./components/About.jsx";
+import ProjectDetails from "./components/ProjectDetails.jsx";
 
 const Home = React.forwardRef((props, ref) => {
   const location = useLocation();
+  const { projectName } = useParams();
 
   const getDynamicContent = () => {
-    switch (location.pathname) {
-      case "/people":
-        return <People />;
-      case "/publications":
-        return <Publications />;
-      case "/projects":
-        return <Projects />;
-      case "/courses":
-        return <Courses />;
-      case "/gallery":
-        return <Gallery />;
+    const routeMapping = {
+      "/about": <About />,
+      "/people": <People />,
+      "/publications": <Publications />,
+      "/projects": <Projects />,
+      "/courses": <Courses />,
+      "/gallery": <Gallery />,
+    };
+
+    if (location.pathname.startsWith("/projects/") && projectName) {
+      return <ProjectDetails projectName={projectName} />;
     }
+
+    return routeMapping[location.pathname] || <About />;
   };
+
   return (
     <>
       <MainBody
@@ -67,6 +79,10 @@ const App = () => {
         <Route path="/people" element={<Home ref={titleRef} />} />
         <Route path="/publications" element={<Home ref={titleRef} />} />
         <Route path="/projects" element={<Home ref={titleRef} />} />
+        <Route
+          path="/projects/:projectName"
+          element={<Home ref={titleRef} />}
+        />
         <Route path="/courses" element={<Home ref={titleRef} />} />
         <Route path="/gallery" element={<Home ref={titleRef} />} />
       </Routes>

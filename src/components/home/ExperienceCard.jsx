@@ -1,8 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import {
-  Col,
-} from "react-bootstrap";
+import { Col } from "react-bootstrap";
 
 const ExperienceCard = ({ data }) => {
   return (
@@ -14,10 +12,9 @@ const ExperienceCard = ({ data }) => {
           <br />
           {data.date}
         </p>
-
       </div>
     </Col>
   );
-}
+};
 
 export default ExperienceCard;
