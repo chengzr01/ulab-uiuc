@@ -1,27 +1,88 @@
 import React from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
+import PeopleCard from "./PeopleCard";
 
+const pi = [
+  {
+    name: "Jiaxuan You",
+    img: require("../assets/img/profiles/JiaxuanYou.jpg"),
+    link: "",
+    description: "",
+  },
+];
 const phd_students = [
-  { name: "Tao Feng", img: require("../assets/img/logo.png") },
+  {
+    name: "Tao Feng",
+    img: require("../assets/img/logo.png"),
+    link: "",
+    description: "",
+  },
   {
     name: "Peixuan Han",
     img: require("../assets/img/profiles/PeixuanHan.jpg"),
+    link: "",
+    description: "",
   },
-  { name: "Yanru Qu", img: require("../assets/img/profiles/YanruQu.jpg") },
-  { name: "Haofei Yu", img: require("../assets/img/profiles/HaofeiYu.jpg") },
+  {
+    name: "Yanru Qu",
+    img: require("../assets/img/profiles/YanruQu.jpg"),
+    link: "",
+    description: "",
+  },
+  {
+    name: "Haofei Yu",
+    img: require("../assets/img/profiles/HaofeiYu.jpg"),
+    link: "",
+    description: "",
+  },
 ];
 
 const ms_students = [
-  { name: "Zirui Cheng", img: require("../assets/img/Patagonia.jpg") },
-  { name: "Zhaochen Hong", img: require("../assets/img/Patagonia.jpg") },
-  { name: "Yexin Wu", img: require("../assets/img/Patagonia.jpg") },
-  { name: "Jinwei Yao", img: require("../assets/img/Patagonia.jpg") },
-  { name: "Kunlun Zhu", img: require("../assets/img/Patagonia.jpg") },
+  {
+    name: "Zirui Cheng",
+    img: require("../assets/img/profiles/ZiruiCheng.jpg"),
+    link: "https://chengzr01.github.io/",
+    description: "",
+  },
+  {
+    name: "Zhaochen Hong",
+    img: require("../assets/img/profiles/ZhaochenHong.jpeg"),
+    link: "",
+    description: "",
+  },
+  {
+    name: "Yexin Wu",
+    img: require("../assets/img/profiles/YexinWu.jpg"),
+    link: "",
+    description: "",
+  },
+  {
+    name: "Jinwei Yao",
+    img: require("../assets/img/profiles/JinweiYao.jpg"),
+    link: "",
+    description: "",
+  },
+  {
+    name: "Kunlun Zhu",
+    img: require("../assets/img/profiles/KunlunZhu.jpeg"),
+    link: "",
+    description: "",
+  },
 ];
 
 const visiting_students = [
-  { name: "Matteo Boffa", img: require("../assets/img/Patagonia.jpg") },
-  { name: "Zijia Liu", img: require("../assets/img/Patagonia.jpg") },
+  {
+    name: "Matteo Boffa",
+    img: require("../assets/img/profiles/MatteoBoffa.jpeg"),
+    link: "",
+    description: "Ph.D. student\nPolitecnico di Torino",
+  },
+  {
+    name: "Zijia Liu",
+    img: require("../assets/img/profiles/ZijiaLiu.jpeg"),
+    link: "",
+    description: "Ph.D. student\nTongji University",
+  },
 ];
 
 const People = React.forwardRef((props, ref) => {
@@ -38,91 +99,87 @@ const People = React.forwardRef((props, ref) => {
       <Container className="text-center">
         <h2 ref={ref}>People</h2>
       </Container>
-      <h3>Principal Investigator</h3>
-      <div>
-        <img
-          className="border border-secondary rounded-circle"
-          src={require("../assets/img/profiles/JiaxuanYou.jpg")}
-          alt="profilepicture"
-          width={150}
-          height={150}
-          style={{ marginTop: "0.5em", marginBottom: "0.5em" }}
-        />
-        <p
-          className="lead"
-          style={{
-            marginTop: "0.5em",
-            marginBottom: "0.5em",
-          }}
-        >
-          <a href="https://cs.stanford.edu/people/jiaxuan/"> Jiaxuan You</a>
-        </p>
-      </div>
+      <h3
+        style={{ textAlign: "center", marginTop: "1em", marginBottom: "1em" }}
+      >
+        Principal Investigator
+      </h3>
+      <Row className="g-4">
+        {pi.map((student, index) => (
+          <Col key={index} md={12} sm={6} xs={12}>
+            <PeopleCard
+              img={student.img}
+              name={student.name}
+              link={student.link}
+              description={student.description}
+            ></PeopleCard>
+          </Col>
+        ))}
+      </Row>
       <Container>
-        <h3>Ph.D. Students</h3>
+        <h3
+          style={{ textAlign: "center", marginTop: "1em", marginBottom: "1em" }}
+        >
+          {" "}
+          Ph.D. Students
+        </h3>
         <Row className="g-4">
           {phd_students.map((student, index) => (
             <Col key={index} md={4} sm={6} xs={12}>
-              <Image
-                src={student.img}
-                alt="profilepicture"
-                roundedCircle
-                style={{
-                  width: "10em",
-                  height: "10em",
-                  objectFit: "cover",
-                }}
-                className="border border-secondary mt-2 mb-2"
-              />
-              <p className="lead mt-2 mb-2">
-                <a href="#">{student.name}</a>
-              </p>
+              <PeopleCard
+                img={student.img}
+                name={student.name}
+                link={student.link}
+                description={student.description}
+              ></PeopleCard>
             </Col>
           ))}
         </Row>
       </Container>
       <Container>
-        <h3>M.S. Students</h3>
+        <h3
+          style={{ textAlign: "center", marginTop: "1em", marginBottom: "1em" }}
+        >
+          M.S. Students
+        </h3>
         <Row className="g-4">
           {ms_students.map((student, index) => (
             <Col key={index} md={4} sm={6} xs={12}>
-              <Image
-                src={student.img}
-                alt="profilepicture"
-                roundedCircle
-                width={150}
-                height={150}
-                className="border border-secondary mt-2 mb-2"
-              />
-              <p className="lead mt-2 mb-2">
-                <a href="#">{student.name}</a>
-              </p>
+              <PeopleCard
+                img={student.img}
+                name={student.name}
+                link={student.link}
+                description={student.description}
+              ></PeopleCard>
             </Col>
           ))}
         </Row>
       </Container>
       <Container>
-        <h3>Visiting Students</h3>
+        <h3
+          style={{ textAlign: "center", marginTop: "1em", marginBottom: "1em" }}
+        >
+          Visiting Students
+        </h3>
         <Row className="g-4">
           {visiting_students.map((student, index) => (
             <Col key={index} md={4} sm={6} xs={12}>
-              <Image
-                src={student.img}
-                alt="profilepicture"
-                roundedCircle
-                width={150}
-                height={150}
-                className="border border-secondary mt-2 mb-2"
-              />
-              <p className="lead mt-2 mb-2">
-                <a href="#">{student.name}</a>
-              </p>
+              <PeopleCard
+                img={student.img}
+                name={student.name}
+                link={student.link}
+                description={student.description}
+              ></PeopleCard>
             </Col>
           ))}
         </Row>
       </Container>
       <Container>
-        <h3>Alumni</h3>
+        <h3
+          style={{ textAlign: "center", marginTop: "1em", marginBottom: "1em" }}
+        >
+          Alumni
+        </h3>
       </Container>
     </div>
   );
