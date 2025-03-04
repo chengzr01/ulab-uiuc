@@ -54,7 +54,6 @@ const visiting_students = [
   },
   {
     name: "Zijia Liu",
-    description: "Ph.D. student  \nfrom Tongji University",
   },
 ];
 

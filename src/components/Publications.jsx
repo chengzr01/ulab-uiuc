@@ -90,7 +90,7 @@ const Publications = React.forwardRef((props, ref) => {
                     {pub.tags && (
                       <div className="mt-2">
                         {pub.tags.map((tag) => (
-                          <span key={tag} className="badge bg-secondary me-1">
+                          <span key={tag} className="badge bg-primary me-1">
                             {tag}
                           </span>
                         ))}

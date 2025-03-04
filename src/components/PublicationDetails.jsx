@@ -214,7 +214,7 @@ const PublicationDetails = React.forwardRef((props, ref) => {
                 >
                   <FileText
                     style={{
-                      color: "black",
+                      color: "primary",
                       marginLeft: "0.5em",
                       marginRight: "0.5em",
                     }}
@@ -242,7 +242,7 @@ const PublicationDetails = React.forwardRef((props, ref) => {
                 >
                   <Github
                     style={{
-                      color: "black",
+                      color: "primary",
                       marginLeft: "0.5em",
                       marginRight: "0.5em",
                     }}
@@ -270,7 +270,7 @@ const PublicationDetails = React.forwardRef((props, ref) => {
                 >
                   <Twitter
                     style={{
-                      color: "black",
+                      color: "primary",
                       marginLeft: "0.5em",
                       marginRight: "0.5em",
                     }}
@@ -298,7 +298,7 @@ const PublicationDetails = React.forwardRef((props, ref) => {
                 >
                   <Mail
                     style={{
-                      color: "black",
+                      color: "primary",
                       marginLeft: "0.5em",
                       marginRight: "0.5em",
                     }}
@@ -391,7 +391,7 @@ const PublicationDetails = React.forwardRef((props, ref) => {
                 >
                   <ClipboardCopy
                     style={{
-                      color: "black",
+                      color: "primary",
                     }}
                   />
                 </button>

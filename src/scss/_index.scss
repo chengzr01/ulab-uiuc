@@ -1,3 +1,22 @@
+$primary: #12284C;
+$primary-100: lighten($primary, 10%);
+$primary-200: lighten($primary, 20%);
+$primary-300: lighten($primary, 30%);
+$primary-400: lighten($primary, 40%);
+$primary-500: lighten($primary, 50%);
+$primary-600: darken($primary, 10%);
+$primary-700: darken($primary, 20%);
+
+$custom-colors: (
+  "primary-100": $primary-100,
+  "primary-200": $primary-200,
+  "primary-300": $primary-300,
+  "primary-400": $primary-400,
+  "primary-500": $primary-500,
+  "primary-600": $primary-600,
+  "primary-700": $primary-700
+);
+
 @font-face {
   font-family: "Source_Sans";
   src: url(../assets/general/font/Source_Sans_3/SourceSans3-VariableFont_wght.ttf);
@@ -7,6 +26,7 @@
   font-family: "Montserrat";
   src: url(../assets/general/font/Montserrat/Montserrat-VariableFont_wght.ttf);
 }
+
 
 html {
   font-size: 14px;
@@ -53,6 +73,10 @@ code {
 
 .bg-gradient {
   background: linear-gradient(rgba(245, 245, 245, 1), rgba(245, 245, 245, 0));
+}
+
+.bg-primary {
+  background-color: $primary !important;
 }
 
 .navbar-transparent {
@@ -137,9 +161,24 @@ code {
     transform: scaleX(0);
   }
 }
+
 .progress-bar-animation {
   @extend .progress;
   & > * {
     animation: progress 1.5s ease-in-out forwards;
+  }
+}
+
+a {
+  color: $primary;
+  position: relative;
+  transition: color 0.3s ease;
+  text-decoration-color: rgba($primary, 0.6); // Thin, slightly transparent underline
+  text-decoration-thickness: 1px; // Very thin line
+  text-underline-offset: 2px; // Slight lift from the text
+
+  &:hover {
+    color: $primary;
+    text-decoration-color: $primary; // Full color underline on hover
   }
 }

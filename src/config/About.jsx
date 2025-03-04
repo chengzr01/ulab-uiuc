@@ -2,10 +2,22 @@ const about = "Welcome to UIUC U Lab!";
 
 const highlights = [
   {
-    topic: "Graph for LLMs",
+    title: "LLM Quantization",
+    description:
+      "Enabling on-device LLM inference with advanced quantization techniques like AWQ, TinyChat, SmoothQuant, and COAT for improved efficiency and performance.",
+    projects: ["AWQ", "TinyChat", "SmoothQuant", "COAT"],
   },
   {
-    topic: "LLMs for Scientific Discovery",
+    title: "Long Context LLM",
+    description:
+      "Developing methods to generate infinite-length texts with fixed memory budgets, including StreamingLLM, Quest, DuoAttention, and LServe.",
+    projects: ["StreamingLLM", "Quest", "DuoAttention", "LServe"],
+  },
+  {
+    title: "Efficient Visual Generation",
+    description:
+      "Advanced visual generation models like HART, SANA, SVDQuant for high-quality image synthesis under computational constraints.",
+    projects: ["HART", "SANA", "SVDQuant"],
   },
 ];
 
