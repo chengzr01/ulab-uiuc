@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 const About = React.forwardRef((props, ref) => {
   return (
@@ -19,7 +19,7 @@ const About = React.forwardRef((props, ref) => {
       <h3>News</h3>
       <ul>
         <li>
-          (Jan 2025) GrouphRouter and GraphEval are accepted at ICLR 2025.
+          (Jan 2025)<b>GrouphRouter</b> and GraphEval are accepted at ICLR 2025.
           [Paper] [Code]{" "}
         </li>
       </ul>

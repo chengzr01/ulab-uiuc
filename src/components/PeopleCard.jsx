@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Image } from "react-bootstrap";
 
 const PeopleCard = React.forwardRef(({ img, name, link, description }, ref) => {
   return (
@@ -13,7 +13,7 @@ const PeopleCard = React.forwardRef(({ img, name, link, description }, ref) => {
       }}
     >
       <Image
-        src={img}
+        src={img ? img : require("../assets/general/logo.png")}
         alt="profilepicture"
         roundedCircle
         style={{
@@ -23,12 +23,17 @@ const PeopleCard = React.forwardRef(({ img, name, link, description }, ref) => {
         }}
         className="border border-secondary mt-2 mb-2"
       />
-      <p className="lead mt-2 mb-2">
-        <a href={link}>{name}</a>
-      </p>
-      {description ? (
-        <i style={{ whiteSpace: "pre-wrap" }}>{description}</i>
-      ) : null}
+      <div className="lead mt-2 mb-2">
+        {link ? <a href={link}>{name}</a> : name}
+      </div>
+      {description && (
+        <div
+          style={{
+            fontWeight: 300,
+          }}
+          dangerouslySetInnerHTML={{ __html: description }}
+        />
+      )}
     </div>
   );
 });

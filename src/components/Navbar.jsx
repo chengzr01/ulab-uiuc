@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useScrollPosition } from "../hooks/useScrollPosition";
-import useResizeObserver from "../hooks/useResizeObserver";
+import useResizeObserver from "../hooks/useResizeObserver.jsx";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import { mainBody } from "../editable-stuff/config.js";
-import { NavLink } from "./home/migration";
+import { NavLink } from "./migration.jsx";
 
 const Navigation = React.forwardRef((props, ref) => {
   const [isTop, setIsTop] = useState(true);
@@ -66,12 +65,6 @@ const Navigation = React.forwardRef((props, ref) => {
             Publications
           </NavLink>
           <NavLink
-            href={process.env.PUBLIC_URL + "/projects"}
-            className={`${!isTop ? "brand" : "brand-white"}`}
-          >
-            Projects
-          </NavLink>
-          <NavLink
             href={process.env.PUBLIC_URL + "/courses"}
             className={`${!isTop ? "brand" : "brand-white"}`}
           >
@@ -82,6 +75,15 @@ const Navigation = React.forwardRef((props, ref) => {
             className={`${!isTop ? "brand" : "brand-white"}`}
           >
             Gallery
+          </NavLink>
+          <NavLink
+            target="_blank"
+            href={
+              "https://docs.google.com/forms/d/e/1FAIpQLSeuTiUwprmkT9skyq6RFAqu981KcNBoa2UPsquYnR27lGvUzA/viewform?usp=sf_link"
+            }
+            className={`${!isTop ? "brand" : "brand-white"}`}
+          >
+            Apply
           </NavLink>
         </Nav>
       </Navbar.Collapse>

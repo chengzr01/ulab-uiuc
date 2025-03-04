@@ -1,89 +1,14 @@
 import React from "react";
-import { Container, Row, Col, Image } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import PeopleCard from "./PeopleCard";
 
-const pi = [
-  {
-    name: "Jiaxuan You",
-    img: require("../assets/img/profiles/JiaxuanYou.jpg"),
-    link: "",
-    description: "",
-  },
-];
-const phd_students = [
-  {
-    name: "Tao Feng",
-    img: require("../assets/img/logo.png"),
-    link: "",
-    description: "",
-  },
-  {
-    name: "Peixuan Han",
-    img: require("../assets/img/profiles/PeixuanHan.jpg"),
-    link: "",
-    description: "",
-  },
-  {
-    name: "Yanru Qu",
-    img: require("../assets/img/profiles/YanruQu.jpg"),
-    link: "",
-    description: "",
-  },
-  {
-    name: "Haofei Yu",
-    img: require("../assets/img/profiles/HaofeiYu.jpg"),
-    link: "",
-    description: "",
-  },
-];
-
-const ms_students = [
-  {
-    name: "Zirui Cheng",
-    img: require("../assets/img/profiles/ZiruiCheng.jpg"),
-    link: "https://chengzr01.github.io/",
-    description: "",
-  },
-  {
-    name: "Zhaochen Hong",
-    img: require("../assets/img/profiles/ZhaochenHong.jpeg"),
-    link: "",
-    description: "",
-  },
-  {
-    name: "Yexin Wu",
-    img: require("../assets/img/profiles/YexinWu.jpg"),
-    link: "",
-    description: "",
-  },
-  {
-    name: "Jinwei Yao",
-    img: require("../assets/img/profiles/JinweiYao.jpg"),
-    link: "",
-    description: "",
-  },
-  {
-    name: "Kunlun Zhu",
-    img: require("../assets/img/profiles/KunlunZhu.jpeg"),
-    link: "",
-    description: "",
-  },
-];
-
-const visiting_students = [
-  {
-    name: "Matteo Boffa",
-    img: require("../assets/img/profiles/MatteoBoffa.jpeg"),
-    link: "",
-    description: "Ph.D. student\nPolitecnico di Torino",
-  },
-  {
-    name: "Zijia Liu",
-    img: require("../assets/img/profiles/ZijiaLiu.jpeg"),
-    link: "",
-    description: "Ph.D. student\nTongji University",
-  },
-];
+import {
+  principal_investigator,
+  phd_students,
+  ms_students,
+  visiting_students,
+  alumni,
+} from "../config/People";
 
 const People = React.forwardRef((props, ref) => {
   return (
@@ -105,7 +30,7 @@ const People = React.forwardRef((props, ref) => {
         Principal Investigator
       </h3>
       <Row className="g-4">
-        {pi.map((student, index) => (
+        {principal_investigator.map((student, index) => (
           <Col key={index} md={12} sm={6} xs={12}>
             <PeopleCard
               img={student.img}
@@ -125,7 +50,7 @@ const People = React.forwardRef((props, ref) => {
         </h3>
         <Row className="g-4">
           {phd_students.map((student, index) => (
-            <Col key={index} md={4} sm={6} xs={12}>
+            <Col key={index} md={3} sm={6} xs={12}>
               <PeopleCard
                 img={student.img}
                 name={student.name}
@@ -144,7 +69,7 @@ const People = React.forwardRef((props, ref) => {
         </h3>
         <Row className="g-4">
           {ms_students.map((student, index) => (
-            <Col key={index} md={4} sm={6} xs={12}>
+            <Col key={index} md={3} sm={6} xs={12}>
               <PeopleCard
                 img={student.img}
                 name={student.name}
@@ -163,7 +88,7 @@ const People = React.forwardRef((props, ref) => {
         </h3>
         <Row className="g-4">
           {visiting_students.map((student, index) => (
-            <Col key={index} md={4} sm={6} xs={12}>
+            <Col key={index} md={3} sm={6} xs={12}>
               <PeopleCard
                 img={student.img}
                 name={student.name}
@@ -180,6 +105,21 @@ const People = React.forwardRef((props, ref) => {
         >
           Alumni
         </h3>
+        {alumni.map((student, index) => (
+          <li key={index}>
+            {student.link ? (
+              <a href={student.link}>{student.name}</a>
+            ) : (
+              student.name
+            )}
+            , {student.description}{" "}
+            {student.placement && (
+              <>
+                <i>(now {student.placement})</i>
+              </>
+            )}{" "}
+          </li>
+        ))}
       </Container>
     </div>
   );

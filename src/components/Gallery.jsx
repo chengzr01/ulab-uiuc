@@ -3,14 +3,9 @@ import { Container, Carousel } from "react-bootstrap";
 
 const images = [
   {
-    src: require("../assets/img/gallery/north.jpg"),
-    alt: "North Quad",
-    caption: "North Quad",
-  },
-  {
-    src: require("../assets/img/gallery/south.jpg"),
-    alt: "South Quad",
-    caption: "South Quad",
+    src: require("../assets/img/gallery/Alma.jpg"),
+    alt: "Alma Mater",
+    caption: "Alma Mater by Lorado Taft",
   },
 ];
 

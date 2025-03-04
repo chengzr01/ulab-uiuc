@@ -36,7 +36,10 @@ const Publications = React.forwardRef((props, ref) => {
           understanding of latest LLM agent research and equip students with
           skills to contribute the research in relevant fields.
         </p>
-        <a href="https://github.com/ulab-uiuc/CS598-Topics-in-LLM-Agents">
+        <a
+          target="_blank"
+          href="https://github.com/ulab-uiuc/CS598-Topics-in-LLM-Agents"
+        >
           Website
         </a>
         <h3>CS598: Deep Learning with Graphs – 2024 Fall</h3>
@@ -62,7 +65,9 @@ const Publications = React.forwardRef((props, ref) => {
           critiquing research papers, discussing and presenting ideas, and
           contributing to collaborative projects.
         </p>
-        <a href="https://ulab-uiuc.github.io/CS598/">Website</a>
+        <a href="https://ulab-uiuc.github.io/CS598/" target="_blank">
+          Website
+        </a>
       </Row>
     </Container>
   );

@@ -1,5 +1,5 @@
-import React from "react";
-import { Container, Row, Col, Card } from "react-bootstrap";
+import React, { useState } from "react";
+import { Row, Col, Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const publications = [
@@ -7,42 +7,140 @@ const publications = [
     key: "Graphrouter",
     title: "Graphrouter: A graph-based router for llm selections",
     authors: "Tao Feng, Yanzhen Shen, Jiaxuan You",
+    year: "2025",
     venue: "ICLR 2025",
+    tags: ["LLM", "Graph"],
   },
-  // Add more publications here
+  {
+    key: "ResearchTown",
+    title: "ResearchTown: Simulator of Human Research Community",
+    authors:
+      "Haofei Yu, Zhaochen Hong, Zirui Cheng, Kunlun Zhu, Keyang Xuan, Jinwei Yao, Tao Feng, Jiaxuan You",
+    year: "2024",
+    venue: "Preprint",
+    tags: ["LLM", "Agent"],
+  },
+  {
+    key: "AIEthics",
+    title: "Ethical Considerations in AI Research",
+    authors: "Keyang Xuan, Jinwei Yao",
+    year: "2024",
+    venue: "AI Ethics Conference",
+    tags: ["Ethics", "LLM"],
+  },
 ];
 
 const Publications = React.forwardRef((props, ref) => {
   const navigate = useNavigate();
+
+  const allTags = [...new Set(publications.flatMap((pub) => pub.tags))];
+
+  const [selectedTags, setSelectedTags] = useState([]);
+
+  const filteredPublications =
+    selectedTags.length > 0
+      ? publications.filter((pub) =>
+          // Check if ALL selected tags are present in the publication
+          selectedTags.every((selectedTag) => pub.tags.includes(selectedTag))
+        )
+      : publications;
+
+  const handleTagToggle = (tag) => {
+    setSelectedTags((prevTags) =>
+      prevTags.includes(tag)
+        ? prevTags.filter((t) => t !== tag)
+        : [...prevTags, tag]
+    );
+  };
+
   return (
-    <Container className="py-5">
+    <div
+      style={{
+        marginLeft: "10%",
+        marginRight: "10%",
+        marginTop: "3em",
+        marginBottom: "3em",
+      }}
+    >
       <h2 ref={ref} className="text-center mb-4">
         Publications
       </h2>
-      <Row className="g-4">
-        {publications.map((pub, index) => (
-          <Col key={index} md={12}>
-            <Card
-              className="p-3 shadow-sm border-0"
-              style={{ transition: "transform 0.3s", cursor: "pointer" }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.transform = "scale(1.05)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.transform = "scale(1)")
-              }
-            >
-              <Card.Body>
-                <Card.Title>{pub.title}</Card.Title>
-                <Card.Text className="text-muted">{pub.authors}</Card.Text>
-                <Card.Text className="fw-medium">{pub.venue}</Card.Text>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
+      <Row>
+        <Col md={2} className="border-end pe-4">
+          <div className="d-flex flex-column">
+            {allTags.map((tag) => (
+              <Button
+                key={tag}
+                variant={
+                  selectedTags.includes(tag) ? "primary" : "outline-secondary"
+                }
+                className="mb-2 text-start"
+                onClick={() => handleTagToggle(tag)}
+              >
+                {tag}
+                {selectedTags.includes(tag) && " ✓"}
+              </Button>
+            ))}
+          </div>
+        </Col>
+
+        <Col md={10}>
+          <Row className="g-4">
+            {filteredPublications.map((pub) => (
+              <Col key={pub.key} md={12}>
+                <Card
+                  className="p-3 shadow-none"
+                  style={{
+                    transition: "transform 0.3s",
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    border: "none",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.transform = "scale(1.05)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.transform = "scale(1)")
+                  }
+                  onClick={() => navigate(`/publications/${pub.key}`)}
+                >
+                  <Card.Body>
+                    <Card.Title>{pub.title}</Card.Title>
+                    <Card.Text className="text-muted">{pub.authors}</Card.Text>
+                    <div className="d-flex justify-content-between align-items-center">
+                      <Card.Text className="fw-medium mb-0">
+                        {pub.venue}
+                      </Card.Text>
+                      <Card.Text className="text-muted mb-0">
+                        {pub.year}
+                      </Card.Text>
+                    </div>
+                    {pub.tags && (
+                      <div className="mt-2">
+                        {pub.tags.map((tag) => (
+                          <span key={tag} className="badge bg-secondary me-1">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+            {filteredPublications.length === 0 && (
+              <Col>
+                <div className="text-center text-muted py-4">
+                  No publications match the selected tags.
+                </div>
+              </Col>
+            )}
+          </Row>
+        </Col>
       </Row>
-    </Container>
+    </div>
   );
 });
 
+Publications.displayName = "Publications";
 export default Publications;
