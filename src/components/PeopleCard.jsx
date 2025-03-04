@@ -1,5 +1,7 @@
 import React from "react";
 import { Image } from "react-bootstrap";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const PeopleCard = React.forwardRef(({ img, name, link, description }, ref) => {
   return (
@@ -27,12 +29,7 @@ const PeopleCard = React.forwardRef(({ img, name, link, description }, ref) => {
         {link ? <a href={link}>{name}</a> : name}
       </div>
       {description && (
-        <div
-          style={{
-            fontWeight: 300,
-          }}
-          dangerouslySetInnerHTML={{ __html: description }}
-        />
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{description}</ReactMarkdown>
       )}
     </div>
   );

@@ -1,13 +1,7 @@
 import React from "react";
 import { Container, Carousel } from "react-bootstrap";
 
-const images = [
-  {
-    src: require("../assets/img/gallery/Alma.jpg"),
-    alt: "Alma Mater",
-    caption: "Alma Mater by Lorado Taft",
-  },
-];
+import { gallery } from "../config/Gallery";
 
 const Gallery = React.forwardRef((props, ref) => {
   return (
@@ -25,7 +19,7 @@ const Gallery = React.forwardRef((props, ref) => {
         </h2>
       </Container>
       <Carousel>
-        {images.map((image, index) => (
+        {gallery.map((image, index) => (
           <Carousel.Item key={index}>
             <img
               className="d-block w-100"

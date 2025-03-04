@@ -1,34 +1,7 @@
 import React, { useState } from "react";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
-const publications = [
-  {
-    key: "Graphrouter",
-    title: "Graphrouter: A graph-based router for llm selections",
-    authors: "Tao Feng, Yanzhen Shen, Jiaxuan You",
-    year: "2025",
-    venue: "ICLR 2025",
-    tags: ["LLM", "Graph"],
-  },
-  {
-    key: "ResearchTown",
-    title: "ResearchTown: Simulator of Human Research Community",
-    authors:
-      "Haofei Yu, Zhaochen Hong, Zirui Cheng, Kunlun Zhu, Keyang Xuan, Jinwei Yao, Tao Feng, Jiaxuan You",
-    year: "2024",
-    venue: "Preprint",
-    tags: ["LLM", "Agent"],
-  },
-  {
-    key: "AIEthics",
-    title: "Ethical Considerations in AI Research",
-    authors: "Keyang Xuan, Jinwei Yao",
-    year: "2024",
-    venue: "AI Ethics Conference",
-    tags: ["Ethics", "LLM"],
-  },
-];
+import { publications } from "../config/Publications";
 
 const Publications = React.forwardRef((props, ref) => {
   const navigate = useNavigate();
@@ -67,13 +40,12 @@ const Publications = React.forwardRef((props, ref) => {
       </h2>
       <Row>
         <Col md={2} className="border-end pe-4">
+          <p className="lead">Topics</p>
           <div className="d-flex flex-column">
             {allTags.map((tag) => (
               <Button
                 key={tag}
-                variant={
-                  selectedTags.includes(tag) ? "primary" : "outline-secondary"
-                }
+                variant={"outline-secondary"}
                 className="mb-2 text-start"
                 onClick={() => handleTagToggle(tag)}
               >

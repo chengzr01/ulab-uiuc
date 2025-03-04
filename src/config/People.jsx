@@ -1,96 +1,67 @@
-// People
-
 const principal_investigator = [
   {
     name: "Prof. Jiaxuan You",
-    img: require("../assets/img/profiles/JiaxuanYou.jpg"),
+    img: require("../assets/people/JiaxuanYou.jpg"),
     link: "https://cs.stanford.edu/~jiaxuan/",
-    description: "",
   },
 ];
 
 const phd_students = [
   {
     name: "Tao Feng",
-    img: null,
-    link: null,
-    description: null,
   },
   {
     name: "Peixuan Han",
-    img: require("../assets/img/profiles/PeixuanHan.jpg"),
-    link: "",
-    description: "",
+    img: require("../assets/people/PeixuanHan.jpg"),
   },
   {
     name: "Yanru Qu",
-    img: require("../assets/img/profiles/YanruQu.jpg"),
-    link: "",
-    description:
-      'coadvised w/ <a href="https://www.mit.edu/~geliu/">Prof. Ge Liu</a>',
+    img: require("../assets/people/YanruQu.jpg"),
+    description: "coadvised w/ [Prof. Ge Liu](https://www.mit.edu/~geliu/)",
   },
   {
     name: "Haofei Yu",
-    img: require("../assets/img/profiles/HaofeiYu.jpg"),
-    link: "",
-    description: "",
+    img: require("../assets/people/HaofeiYu.jpg"),
   },
 ];
 
 const ms_students = [
   {
     name: "Zirui Cheng",
-    img: require("../assets/img/profiles/ZiruiCheng.jpg"),
+    img: require("../assets/people/ZiruiCheng.jpg"),
     link: "https://chengzr01.github.io/",
-    description: "",
   },
   {
     name: "Zhaochen Hong",
-    img: require("../assets/img/profiles/ZhaochenHong.jpeg"),
-    link: "",
-    description: "",
   },
   {
     name: "Yexin Wu",
-    img: require("../assets/img/profiles/YexinWu.jpg"),
-    link: "",
-    description: "",
   },
   {
     name: "Jinwei Yao",
-    img: require("../assets/img/profiles/JinweiYao.jpg"),
-    link: "",
-    description: "",
   },
   {
     name: "Kunlun Zhu",
-    img: require("../assets/img/profiles/KunlunZhu.jpeg"),
-    link: "",
-    description: "",
   },
 ];
 
 const visiting_students = [
   {
     name: "Matteo Boffa",
-    img: require("../assets/img/profiles/MatteoBoffa.jpeg"),
-    link: "",
-    description: "Ph.D. student<br/>at Politecnico di Torino",
+    img: require("../assets/people/MatteoBoffa.jpeg"),
+    description:
+      "Ph.D. student  \nfrom [Politecnico di Torino](https://www.polito.it/)",
   },
   {
     name: "Zijia Liu",
-    img: require("../assets/img/profiles/ZijiaLiu.jpeg"),
-    link: "",
-    description: "Ph.D. student<br/>at Tongji University",
+    description: "Ph.D. student  \nfrom Tongji University",
   },
 ];
 
 const alumni = [
   {
     name: "Yihang Sun",
-    link: null,
     description: "Undergraduate at Peking University",
-    placement: "Ph.D. students at Cargenie Mellon University",
   },
   {
     name: "Guanyu Lin",

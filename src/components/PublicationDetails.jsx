@@ -2,45 +2,61 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
-import { Container, Card, Ratio, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  Figure,
+  Ratio,
+  Card,
+} from "react-bootstrap";
 import { Jumbotron } from "./migration";
-import { FileText, Github, Twitter, Mail } from "lucide-react";
+import { FileText, Github, Twitter, Mail, ClipboardCopy } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import rehypeSanitize from "rehype-sanitize";
 import remarkBreaks from "remark-breaks";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { coy as codeStyle } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+import { publications } from "../config/Publications";
 
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
-const projectData = {
-  ResearchTown: {
-    title: "ResearchTown",
-    description: "Simulator of Human Research Community",
-    markdownFile: require("../assets/files/researchtown.md"),
-    pdfUrl: require("../assets/files/researchtown.pdf"),
-  },
-};
-
 const PublicationDetails = React.forwardRef((props, ref) => {
-  const { projectName } = useParams();
-  const [markdownContent, setMarkdownContent] = useState("");
+  const { publicationName } = useParams();
+  const publication = publications.find((pub) => pub.key === publicationName);
 
-  const videos = [
-    {
-      videoId: "Yz-r7KGXbyM",
-      title: "Virtual Lab of AI Scientists",
-      description: "James Zou (Stanford University)",
-    },
-  ];
+  const [markdownContent, setMarkdownContent] = useState("");
+  const [bibContent, setBibContent] = useState("");
 
   useEffect(() => {
     const importMarkdownFile = () => {
-      try {
-        const markdownFile = require("../assets/files/researchtown.md");
+      const markdownFile = publication.files.markdown;
 
-        fetch(markdownFile)
+      fetch(markdownFile)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.text();
+        })
+        .then((text) => {
+          setMarkdownContent(text);
+        })
+        .catch((err) => {
+          console.error("Error loading markdown:", err);
+        });
+    };
+
+    const importBibFile = () => {
+      try {
+        const bibFile = publication.files.bib;
+
+        fetch(bibFile)
           .then((response) => {
             if (!response.ok) {
               throw new Error("Network response was not ok");
@@ -48,7 +64,7 @@ const PublicationDetails = React.forwardRef((props, ref) => {
             return response.text();
           })
           .then((text) => {
-            setMarkdownContent(text);
+            setBibContent(text);
           })
           .catch((err) => {
             console.error("Error loading markdown:", err);
@@ -59,44 +75,32 @@ const PublicationDetails = React.forwardRef((props, ref) => {
     };
 
     importMarkdownFile();
+    importBibFile();
   }, []);
 
-  // Custom image renderer specifically for your project structure
-  const ImageRenderer = ({ src, alt }) => {
-    try {
-      // Dynamically import images from the same assets/files directory
-      const localImageSrc = require(`../assets/files/${src}`);
-      return (
-        <img
-          src={localImageSrc}
-          alt={alt}
-          className="markdown-image"
-          style={{ maxWidth: "100%", height: "auto" }}
-        />
-      );
-    } catch (err) {
-      console.error(`Error loading image: ${src}`, err);
-      return <span>Image not found: {src}</span>;
-    }
-  };
-
-  // Alternative approach using require.context for more flexible image loading
   const imageContext = require.context(
-    "../assets/files",
+    "../assets/publications/yu2024researchtown/",
     false,
-    /\.(png|jpe?g|gif|svg)$/
+    /\.(png|jpe?g|gif|svg|pdf)$/
   );
 
-  const ImageRendererWithContext = ({ src, alt }) => {
+  const ImageRendererWithContext = ({ src, alt, title }) => {
     try {
       const localImageSrc = imageContext(`${src}`);
       return (
-        <img
-          src={localImageSrc}
-          alt={alt}
-          className="markdown-image"
-          style={{ maxWidth: "100%", height: "auto" }}
-        />
+        <Figure className="text-center">
+          <img
+            src={localImageSrc}
+            alt={alt}
+            className="markdown-image"
+            style={{ maxWidth: "100%", height: "auto" }}
+          />
+          {title && (
+            <Figure.Caption>
+              <i>{title}</i>
+            </Figure.Caption>
+          )}
+        </Figure>
       );
     } catch (err) {
       console.error(`Error loading image with context: ${src}`, err);
@@ -105,19 +109,51 @@ const PublicationDetails = React.forwardRef((props, ref) => {
   };
 
   const TableRenderer = ({ children }) => (
-    <div className="table-responsive" style={{ overflowX: "auto" }}>
-      <table
-        className="markdown-table"
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          marginBottom: "1rem",
-        }}
-      >
+    <div className="table-responsive">
+      <Table striped bordered hover responsive>
         {children}
-      </table>
+      </Table>
     </div>
   );
+
+  const CodeRenderer = ({ node, inline, className, children, ...props }) => {
+    const match = /language-(\w+)/.exec(className || "");
+    const language = match ? match[1] : "text";
+
+    if (inline) {
+      return (
+        <code
+          className="bg-light text-dark px-1 rounded"
+          style={{
+            fontFamily: "monospace",
+            fontSize: "0.9em",
+            padding: "2px 4px",
+            borderRadius: "4px",
+            backgroundColor: "#f8f9fa",
+          }}
+          {...props}
+        >
+          {children}
+        </code>
+      );
+    }
+
+    return (
+      <SyntaxHighlighter
+        language={language}
+        style={codeStyle}
+        customStyle={{
+          margin: 0,
+          padding: "1em",
+          borderRadius: "0.5em",
+          fontSize: "0.95em",
+        }}
+        {...props}
+      >
+        {String(children).replace(/\n$/, "")}
+      </SyntaxHighlighter>
+    );
+  };
 
   return (
     <div>
@@ -131,20 +167,18 @@ const PublicationDetails = React.forwardRef((props, ref) => {
           height: "15em",
         }}
       >
-        <div id="stars"></div>
         <Container
           className="text-center"
           style={{ marginTop: "1.5em", marginBottom: "1.5em" }}
         >
           <h2 ref={ref} style={{ color: "white" }}>
-            <b>Research Town: Simulator of Human Research Community</b>
+            <b>{publication.title}</b>
           </h2>
           <div className="lead typist" style={{ color: "white" }}>
-            Haofei Yu*, Zhaochen Hong*, Zirui Cheng*, Kunlun Zhu*, Keyang Xuan,
-            Jinwei Yao, Tao Feng, Jiaxuan You
+            {publication.authors}
           </div>
           <div className="lead typist" style={{ color: "white" }}>
-            Dec 27, 2024
+            {publication.venue}
           </div>
         </Container>
       </Jumbotron>
@@ -156,117 +190,126 @@ const PublicationDetails = React.forwardRef((props, ref) => {
           marginBottom: "3em",
         }}
       >
-        {" "}
         <Container>
-          <Row className="g-4">
-            <Col
-              md={3}
-              sm={6}
-              xs={12}
-              style={{
-                textAlign: "center",
-                marginTop: "1em",
-                marginBottom: "1em",
-              }}
-            >
-              <a
-                href={"https://arxiv.org/pdf/2412.17767"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="lead typist"
+          <Row
+            className="g-4"
+            style={{ textAlign: "center", justifyContent: "center" }}
+          >
+            {publication.links.paper ? (
+              <Col
+                md={2}
+                sm={6}
+                xs={12}
+                style={{
+                  textAlign: "center",
+                  marginTop: "1em",
+                  marginBottom: "1em",
+                }}
               >
-                <FileText
-                  style={{
-                    color: "black",
-                    marginLeft: "0.5em",
-                    marginRight: "0.5em",
-                  }}
-                />
-                Paper
-              </a>
-            </Col>
-            <Col
-              md={3}
-              sm={6}
-              xs={12}
-              style={{
-                textAlign: "center",
-                marginTop: "1em",
-                marginBottom: "1em",
-              }}
-            >
-              <a
-                href={"https://github.com/ulab-uiuc/research-town"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="lead typist"
+                <a
+                  href={publication.links.paper}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lead typist"
+                >
+                  <FileText
+                    style={{
+                      color: "black",
+                      marginLeft: "0.5em",
+                      marginRight: "0.5em",
+                    }}
+                  />
+                  Paper
+                </a>
+              </Col>
+            ) : null}
+            {publication.links.code ? (
+              <Col
+                md={2}
+                sm={6}
+                xs={12}
+                style={{
+                  textAlign: "center",
+                  marginTop: "1em",
+                  marginBottom: "1em",
+                }}
               >
-                <Github
-                  style={{
-                    color: "black",
-                    marginLeft: "0.5em",
-                    marginRight: "0.5em",
-                  }}
-                />
-                Code
-              </a>
-            </Col>
-            <Col
-              md={3}
-              sm={6}
-              xs={12}
-              style={{
-                textAlign: "center",
-                marginTop: "1em",
-                marginBottom: "1em",
-              }}
-            >
-              <a
-                href={"https://x.com/youjiaxuan/status/1840767158868918639"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="lead typist"
+                <a
+                  href={publication.links.code}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lead typist"
+                >
+                  <Github
+                    style={{
+                      color: "black",
+                      marginLeft: "0.5em",
+                      marginRight: "0.5em",
+                    }}
+                  />
+                  Code
+                </a>
+              </Col>
+            ) : null}
+            {publication.links.thread ? (
+              <Col
+                md={2}
+                sm={6}
+                xs={12}
+                style={{
+                  textAlign: "center",
+                  marginTop: "1em",
+                  marginBottom: "1em",
+                }}
               >
-                <Twitter
-                  style={{
-                    color: "black",
-                    marginLeft: "0.5em",
-                    marginRight: "0.5em",
-                  }}
-                />
-                Thread
-              </a>
-            </Col>
-            <Col
-              md={3}
-              sm={6}
-              xs={12}
-              style={{
-                textAlign: "center",
-                marginTop: "1em",
-                marginBottom: "1em",
-              }}
-            >
-              <a
-                href={"mailto:ziruic4@illinois.edu"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="lead typist"
+                <a
+                  href={publication.links.thread}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lead typist"
+                >
+                  <Twitter
+                    style={{
+                      color: "black",
+                      marginLeft: "0.5em",
+                      marginRight: "0.5em",
+                    }}
+                  />
+                  Thread
+                </a>
+              </Col>
+            ) : null}
+            {publication.links.contact ? (
+              <Col
+                md={2}
+                sm={6}
+                xs={12}
+                style={{
+                  textAlign: "center",
+                  marginTop: "1em",
+                  marginBottom: "1em",
+                }}
               >
-                <Mail
-                  style={{
-                    color: "black",
-                    marginLeft: "0.5em",
-                    marginRight: "0.5em",
-                  }}
-                />
-                Contact
-              </a>
-            </Col>
+                <a
+                  href={publication.links.contact}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="lead typist"
+                >
+                  <Mail
+                    style={{
+                      color: "black",
+                      marginLeft: "0.5em",
+                      marginRight: "0.5em",
+                    }}
+                  />
+                  Contact
+                </a>
+              </Col>
+            ) : null}
           </Row>
         </Container>
       </div>
-
       <div
         style={{
           marginLeft: "10%",
@@ -288,97 +331,86 @@ const PublicationDetails = React.forwardRef((props, ref) => {
             components={{
               img: ImageRendererWithContext,
               table: TableRenderer,
-
-              h1: ({ node, ...props }) => (
-                <h1 className="custom-h1" {...props} />
-              ),
-              code: ({ node, inline, className, children, ...props }) => {
-                const match = /language-(\w+)/.exec(className || "");
-                return !inline ? (
-                  <code
-                    className={`language-${match ? match[1] : "text"}`}
-                    {...props}
-                  >
-                    {children}
-                  </code>
-                ) : (
-                  <code className="inline-code" {...props}>
-                    {children}
-                  </code>
-                );
-              },
+              code: CodeRenderer,
             }}
           >
             {markdownContent}
           </ReactMarkdown>
         </Container>
 
-        {videos.map((video, index) => (
-          <Card>
-            <Ratio aspectRatio="16x9">
-              <iframe
-                src={`https://www.youtube.com/embed/${video.videoId}`}
-                title={video.title}
-                allowFullScreen
-                frameBorder="0"
-              ></iframe>
-            </Ratio>
-            <Card.Body>
-              <Card.Title>{video.title}</Card.Title>
-              <Card.Text>{video.description}</Card.Text>
-            </Card.Body>
-          </Card>
-        ))}
+        {publication.links.video ? (
+          <Container style={{ marginTop: "1em", marginBottom: "1em" }}>
+            <Row className="g-4 align-items-center">
+              <Col md="auto" sm={12}>
+                <h2>Video</h2>
+              </Col>
+              <Card>
+                <Ratio aspectRatio="16x9">
+                  <iframe
+                    src={publication.links.video}
+                    allowFullScreen
+                    frameBorder="0"
+                  ></iframe>
+                </Ratio>
+              </Card>
+            </Row>
+          </Container>
+        ) : null}
 
-        <div
-          style={{
-            marginTop: "1em",
-            marginBottom: "1em",
-            height: "45em",
-            border: "1px solid #ccc",
-          }}
-        >
-          <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-            <Viewer fileUrl={require("../assets/files/researchtown.pdf")} />
-          </Worker>
-        </div>
+        {publication.files.pdf ? (
+          <Container style={{ marginTop: "1em", marginBottom: "1em" }}>
+            <Row className="g-4 align-items-center">
+              <Col md="auto" sm={12}>
+                <h2>Paper</h2>
+              </Col>
+              <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+                <div style={{ height: "30em", overflow: "auto" }}>
+                  <Viewer fileUrl={publication.files.pdf} />
+                </div>
+              </Worker>
+            </Row>
+          </Container>
+        ) : null}
 
-        <div
-          className="citation-block"
-          style={{
-            backgroundColor: "#f5f5f5",
-            fontFamily: "monospace",
-            borderRadius: "1em",
-            padding: "1em",
-            color: "#333",
-          }}
-        >
-          <pre>{`@article{yu2024researchtown,
-  title={Research Town: Simulator of Human Research Community},
-  author={Haofei Yu and Zhaochen Hong and Zirui Cheng and Kunlun Zhu and Keyang Xuan and Jinwei Yao and Tao Feng and Jiaxuan You},
-  journal={arXiv preprint arXiv:2412.17767},
-  year={2024}
-}`}</pre>
-        </div>
-        <button
-          onClick={() => {
-            navigator.clipboard.writeText(`@article{yu2024researchtown,
-  title={Research Town: Simulator of Human Research Community},
-  author={Haofei Yu and Zhaochen Hong and Zirui Cheng and Kunlun Zhu and Keyang Xuan and Jinwei Yao and Tao Feng and Jiaxuan You},
-  journal={arXiv preprint arXiv:2412.17767},
-  year={2024}
-}`);
-          }}
-          style={{
-            marginTop: "10px",
-            border: "none",
-            padding: "5px 10px",
-            borderRadius: "3px",
-            cursor: "pointer",
-          }}
-        >
-          Copy
-        </button>
+        {publication.files.bib ? (
+          <Container style={{ marginTop: "1em", marginBottom: "1em" }}>
+            <Row className="g-4 align-items-center">
+              <Col md="auto" sm={12}>
+                <h2>Citation</h2>
+              </Col>
+              <Col md="auto" sm={12}>
+                <button
+                  style={{
+                    border: "none",
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                  }}
+                  onClick={() => {
+                    navigator.clipboard.writeText(bibContent);
+                  }}
+                >
+                  <ClipboardCopy
+                    style={{
+                      color: "black",
+                    }}
+                  />
+                </button>
+              </Col>
+            </Row>
+            <div
+              className="citation-block"
+              style={{
+                backgroundColor: "#f5f5f5",
+                fontFamily: "monospace",
+                borderRadius: "1em",
+                padding: "1em",
+                color: "#333",
+              }}
+            >
+              <pre>{bibContent}</pre>
+            </div>
+          </Container>
+        ) : null}
       </div>
     </div>
   );
