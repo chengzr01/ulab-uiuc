@@ -1,20 +1,10 @@
 import React from "react";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import { about, highlights, news, impacts } from "../config/About";
+import { useNavigate } from "react-router-dom";
 
-const NewsItem = ({ time, event }) => {
-  return (
-    <li className="lead mt-2 mb-2">
-      <span
-        className="lead mt-2 mb-2"
-        style={{ fontWeight: "bold", marginRight: "0.5rem" }}
-      >
-        ({time})
-      </span>
-      {event}
-    </li>
-  );
-};
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const LocationMap = () => {
   return (
@@ -36,6 +26,7 @@ const LocationMap = () => {
 };
 
 const About = React.forwardRef((props, ref) => {
+  const navigate = useNavigate();
   return (
     <div
       style={{
@@ -53,7 +44,7 @@ const About = React.forwardRef((props, ref) => {
         }}
       >
         <h3>About</h3>
-        <p className="lead mt-2 mb-2">{about}</p>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{about}</ReactMarkdown>
       </Container>
       <Container
         style={{
@@ -68,17 +59,23 @@ const About = React.forwardRef((props, ref) => {
               <Card className="h-100 shadow-sm">
                 <Card.Body>
                   <Card.Title className="mb-3">{highlight.title}</Card.Title>
-                  <Card.Text>{highlight.description}</Card.Text>
-                  <div className="mt-3">
-                    <strong>Key Projects:</strong>
-                    <div className="d-flex flex-wrap mt-2">
-                      {highlight.projects.map((project, techIndex) => (
-                        <span className="badge bg-primary me-2 mb-2">
-                          {project}
-                        </span>
-                      ))}
+                  <Card.Text>
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {highlight.description}
+                    </ReactMarkdown>
+                  </Card.Text>
+                  {highlight.projects.length > 0 ? (
+                    <div className="mt-3">
+                      <strong>Key Projects:</strong>
+                      <div className="d-flex flex-wrap mt-2">
+                        {highlight.projects.map((project, techIndex) => (
+                          <span className="badge bg-primary me-2 mb-2">
+                            {project}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  ) : null}
                 </Card.Body>
               </Card>
             </Col>
@@ -92,9 +89,21 @@ const About = React.forwardRef((props, ref) => {
         }}
       >
         <h3>News</h3>
-        <ul style={{ paddingLeft: "20px" }}>
+        <ul>
           {news.map((item, index) => (
-            <NewsItem key={index} time={item.time} event={item.event} />
+            <li key={index} style={{ listStyleType: "disc" }}>
+              <div
+                style={{
+                  display: "inline-flex",
+                  gap: "2em",
+                }}
+              >
+                <span style={{ fontWeight: "bold" }}>({item.time})</span>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {item.event}
+                </ReactMarkdown>
+              </div>
+            </li>
           ))}
         </ul>
       </Container>
@@ -105,7 +114,7 @@ const About = React.forwardRef((props, ref) => {
         }}
       >
         <h3>Impacts</h3>
-        <p className="lead mt-2 mb-2">{impacts}</p>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{impacts}</ReactMarkdown>
       </Container>
       <Container
         style={{
